@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="./style.css" />
+    <title>Gebetszeiten für Fotimajon</title>
+  </head>
+  <body>
+    <h1>Gebetszeiten für Fotimajon</h1>
+    <p>
+      Damit ich Dein Standort finden kann, bitte ich auf "Standort von
+      Fotimajon" zu drücken
+    </p>
+
+    <button onclick="getLocation()">Standort von Fotimajon</button>
+
+    <div id="map"></div>
+
+    <div id="prayerTimes"></div>
+
+    <script>
+      // Funktion zum Laden der Gebetszeiten
+      function getLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(showPosition);
+        }
+      }
+
+      function showPosition(position) {
+        getPrayerTimes(position.coords.latitude, position.coords.longitude);
+        initMap(position.coords.latitude, position.coords.longitude);
+      }
+
+      function getPrayerTimes(latitude, longitude) {
+        // Hier die Koordinaten für den gewünschten Ort eintragen
+        // get the location
+        let latitude_x = latitude; // Beispiel: New York
+        let longitude_y = longitude;
+        console.log(latitude, longitude);
+
+        // API-Anfrage an "aladhan.com" für Gebetszeiten
+        let apiUrl = `https://api.aladhan.com/v1/timings?latitude=${latitude_x}&longitude=${longitude_y}&method=3`;
+
+        fetch(apiUrl)
+          .then((response) => response.json())
+          .then((data) => {
+            displayPrayerTimes(data.data.timings);
+          })
+          .catch((error) =>
+            console.error("Fehler beim Abrufen der Gebetszeiten:", error)
+          );
+      }
+
+      // Funktion zum Anzeigen der Gebetszeiten
+      function displayPrayerTimes(times) {
+        let prayerTimesDiv = document.getElementById("prayerTimes");
+        let html = "<div><h2>Gebetszeiten</h2> </div>";
+
+        // Iteriere durch die Gebetszeiten und füge sie dem HTML hinzu
+        for (let time in times) {
+          html += `<div class="prayerCard"><p>${time}</p><p>${times[time]}</p></div>`;
+        }
+
+        // Füge das generierte HTML zum div hinzu
+        prayerTimesDiv.innerHTML = html;
+      }
+
+      function initMap(latitude, longitude) {
+        // Coordinates for the location (replace with your desired coordinates)
+        let pos_latitude = latitude; // Example: New York
+        let pos_longitude = longitude;
+
+        // Create a map centered at the specified location
+        let map = L.map("map").setView([pos_latitude, pos_longitude], 12);
+
+        // Add OpenStreetMap as the tile layer
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution: "© OpenStreetMap contributors",
+        }).addTo(map);
+
+        // Create a marker for the specified location
+        L.marker([pos_latitude, pos_longitude])
+          .addTo(map)
+          .bindPopup("My Location"); // Optional popup for the marker
+      }
+    </script>
+  </body>
+</html>
