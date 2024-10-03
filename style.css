@@ -1,0 +1,65 @@
+/* Allgemeine Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+h1 {
+  color: #333;
+}
+
+p {
+  color: #555;
+  margin: 5px 0;
+}
+
+button {
+  background-color: #3498db;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+/* Kartencontainer */
+#map {
+  height: 400px;
+  margin-top: 20px;
+}
+/* Gebetszeitencontainer */
+#prayerTimes {
+  margin-top: 20px;
+}
+
+h2 {
+  color: #333;
+  width: 100%;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 10px;
+}
+#prayerTimes p {
+  display: flex;
+  justify-content: space-between;
+  color: black;
+}
+
+#prayerTimes {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.prayerCard {
+  flex: 0 1 100%;
+  margin: 10px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
